@@ -59,23 +59,17 @@
   </style>
 </head>
 <body>
-<header>
   <div class="brand">
-    <div class="dpb">DPB</div>
-    <div class="title">Odchody v reálnom čase</div>
+    <div class="dpb"></div>
+    <div class="title"></div>
   </div>
-  <div class="status"><span class="dot"></span><span>LIVE · automatická obnova</span></div>
+  <div class="status"><span></span></div>
 </header>
 
 <main>
-  <section class="station">
-    <div class="stationHead">
-      <div class="stationName">Súhvezdná</div>
-      <div class="routes">
-        <span class="route">39</span>
-        <span class="route">67</span>
-        <span class="route night">N74</span>
-      </div>
+
+   
+            </div>
     </div>
     <div class="liveFrame">
       <iframe id="suhvezdna"
@@ -85,12 +79,8 @@
   </section>
 
   <section class="station">
-    <div class="stationHead">
-      <div class="stationName">Astronomická</div>
-      <div class="routes">
-        <span class="route">9</span>
-        <span class="route">78</span>
-        <span class="route night">N70</span>
+   
+      
       </div>
     </div>
     <div class="liveFrame">
@@ -107,10 +97,7 @@
 </footer>
 
 <script>
-  // Obnova iframe každých 15 sekúnd. Samotná tabuľa môže svoje dáta obnovovať
-  // aj samostatne; reload je poistka pre prípad, že sa stránka "zasekne".
-  const RELOAD_MS = 15000;
-  const ids = ["suhvezdna","astronomicka"];
+
 
   setInterval(() => {
     ids.forEach(id => {
