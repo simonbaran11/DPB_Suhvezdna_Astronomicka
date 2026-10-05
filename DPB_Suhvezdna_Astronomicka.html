@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="sk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#05070a">
+  <title>DPB Live — Súhvezdná / Astronomická</title>
+  <style>
+    :root{
+      --bg:#05070a; --panel:#0d1117; --panel2:#121820; --line:#27303a;
+      --text:#f3f5f7; --muted:#98a2ad; --accent:#f28c00; --green:#9be564;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;width:100%;height:100%;background:var(--bg);color:var(--text);
+      font-family:Arial,Helvetica,sans-serif;overflow:hidden}
+    body{display:flex;flex-direction:column}
+    header{
+      height:76px;flex:0 0 76px;background:#090c10;border-bottom:1px solid var(--line);
+      display:flex;align-items:center;justify-content:space-between;padding:0 24px;
+    }
+    .brand{display:flex;align-items:center;gap:14px}
+    .dpb{font-size:26px;font-weight:900;letter-spacing:.08em}
+    .title{font-size:18px;font-weight:700}
+    .status{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:13px}
+    .dot{width:9px;height:9px;border-radius:50%;background:var(--green);box-shadow:0 0 9px #9be564}
+    main{
+      flex:1;min-height:0;display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:12px;
+    }
+    .station{
+      min-width:0;min-height:0;background:var(--panel);border:1px solid var(--line);
+      border-radius:8px;display:flex;flex-direction:column;overflow:hidden;
+    }
+    .stationHead{
+      flex:0 0 82px;background:linear-gradient(180deg,#151b22,#0f141a);
+      border-bottom:1px solid var(--line);padding:13px 17px;
+    }
+    .stationName{font-size:25px;font-weight:800;letter-spacing:.01em}
+    .routes{display:flex;gap:7px;margin-top:9px;flex-wrap:wrap}
+    .route{
+      font-weight:900;font-size:13px;padding:4px 8px;border-radius:4px;
+      background:#f2f2f2;color:#111;min-width:30px;text-align:center;
+    }
+    .route.night{background:#27313c;color:#fff;border:1px solid #657180}
+    .liveFrame{flex:1;min-height:0;background:#090d12;position:relative}
+    iframe{border:0;width:100%;height:100%;display:block;background:#090d12}
+    footer{
+      height:28px;flex:0 0 28px;padding:0 14px;display:flex;align-items:center;
+      justify-content:space-between;background:#080b0f;color:#77818d;font-size:11px;
+      border-top:1px solid var(--line)
+    }
+    @media(max-width:800px){
+      html,body{overflow:auto}
+      header{height:62px;flex-basis:62px;padding:0 14px}
+      .dpb{font-size:21px}.title{font-size:15px}
+      main{grid-template-columns:1fr;min-height:calc(100vh - 90px)}
+      .station{height:calc(50vh - 45px);min-height:420px}
+      .stationHead{flex-basis:74px}.stationName{font-size:21px}
+    }
+  </style>
+</head>
+<body>
+<header>
+  <div class="brand">
+    <div class="dpb">DPB</div>
+    <div class="title">Odchody v reálnom čase</div>
+  </div>
+  <div class="status"><span class="dot"></span><span>LIVE · automatická obnova</span></div>
+</header>
+
+<main>
+  <section class="station">
+    <div class="stationHead">
+      <div class="stationName">Súhvezdná</div>
+      <div class="routes">
+        <span class="route">39</span>
+        <span class="route">67</span>
+        <span class="route night">N74</span>
+      </div>
+    </div>
+    <div class="liveFrame">
+      <iframe id="suhvezdna"
+        src="https://imhd.sk/ba/online-zastavkova-tabula?ssd=1&st=311"
+        title="Súhvezdná — živé odchody"></iframe>
+    </div>
+  </section>
+
+  <section class="station">
+    <div class="stationHead">
+      <div class="stationName">Astronomická</div>
+      <div class="routes">
+        <span class="route">9</span>
+        <span class="route">78</span>
+        <span class="route night">N70</span>
+      </div>
+    </div>
+    <div class="liveFrame">
+      <iframe id="astronomicka"
+        src="https://imhd.sk/ba/online-zastavkova-tabula?ssd=1&st=5"
+        title="Astronomická — živé odchody"></iframe>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <span>Dáta: virtuálna zastávková tabuľa imhd.sk / DPB</span>
+  <span id="clock">--:--:--</span>
+</footer>
+
+<script>
+  // Obnova iframe každých 15 sekúnd. Samotná tabuľa môže svoje dáta obnovovať
+  // aj samostatne; reload je poistka pre prípad, že sa stránka "zasekne".
+  const RELOAD_MS = 15000;
+  const ids = ["suhvezdna","astronomicka"];
+
+  setInterval(() => {
+    ids.forEach(id => {
+      const f = document.getElementById(id);
+      try {
+        const base = f.src.split("#")[0];
+        f.src = base + (base.includes("?") ? "&" : "?") + "_=" + Date.now();
+      } catch(e) {}
+    });
+  }, RELOAD_MS);
+
+  function tick(){
+    const d = new Date();
+    document.getElementById("clock").textContent =
+      d.toLocaleTimeString("sk-SK",{hour12:false});
+  }
+  tick(); setInterval(tick,1000);
+</script>
+</body>
+</html>
